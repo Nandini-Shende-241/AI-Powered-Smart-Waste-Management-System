@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Waste - Smart Waste Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f4f7f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .back-btn {
+            background-color: white;
+            color: #2e7d32;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .form-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-box h2 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .form-box > p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+        }
+
+        .user-info {
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #f1f8f2;
+            border-radius: 6px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .location-box {
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #f1f8f2;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .location-btn {
+            margin-top: 10px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 25px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .submit-btn:disabled {
+            background-color: #999;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            display: block;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #81c784;
+        }
+
+        .error {
+            display: block;
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef9a9a;
+        }
+
+        .info {
+            display: block;
+            background-color: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #90caf9;
+        }
+
+        .result-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f1f8f2;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result-box h3 {
+            color: #2e7d32;
+            margin-top: 0;
+        }
+
+        .result-item {
+            margin: 8px 0;
+        }
+
+        .complaint-id {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>♻️ Smart Waste Management</h1>
+
+    <button class="back-btn" onclick="goBack()">
+        Back to Dashboard
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <div class="form-box">
+
+        <h2>📝 Report Waste</h2>
+
+        <p>
+            Report waste or an unclean area.
+            Our AI will analyze the uploaded image.
+        </p>
+
+
+        <!-- AUTOMATIC USER INFORMATION -->
+
+        <label>
+            Logged-in User
+        </label>
+
+        <div class="user-info" id="userInfo">
+            Checking login...
+        </div>
+
+
+        <!-- WASTE CATEGORY -->
+
+        <label for="category">
+            Waste Category
+        </label>
+
+        <select id="category" required>
+
+            <option value="">
+                Select waste category
+            </option>
+
+            <option value="plastic">Plastic</option>
+            <option value="paper">Paper</option>
+            <option value="glass">Glass</option>
+            <option value="metal">Metal</option>
+            <option value="organic">Organic</option>
+            <option value="e-waste">E-Waste</option>
+            <option value="cardboard">Cardboard</option>
+            <option value="textile">Textile</option>
+            <option value="other">Other</option>
+
+        </select>
+
+
+        <!-- DESCRIPTION -->
+
+        <label for="description">
+            Waste Description
+        </label>
+
+        <textarea
+            id="description"
+            placeholder="Describe the waste or unclean area..."
+            required></textarea>
+
+
+        <!-- IMAGE -->
+
+        <label for="wasteImage">
+            📷 Waste Image
+        </label>
+
+        <input
+            type="file"
+            id="wasteImage"
+            accept="image/*"
+            capture="environment"
+            required>
+
+        <p id="imageStatus">
+            Please select or take a picture of the waste.
+        </p>
+
+
+        <!-- GPS -->
+
+        <label>
+            📍 GPS Location
+        </label>
+
+        <button
+            type="button"
+            class="location-btn"
+            onclick="getLocation()">
+
+            Get My Current Location
+
+        </button>
+
+        <div
+            class="location-box"
+            id="locationResult">
+
+            Location not detected yet.
+
+        </div>
+
+        <input type="hidden" id="latitude">
+        <input type="hidden" id="longitude">
+
+
+        <!-- SUBMIT -->
+
+        <button
+            type="button"
+            class="submit-btn"
+            id="submitButton"
+            onclick="submitReport()">
+
+            🚨 Submit Waste Report
+
+        </button>
+
+
+        <!-- MESSAGE -->
+
+        <div class="message" id="message"></div>
+
+
+        <!-- RESULT -->
+
+        <div class="result-box" id="resultBox">
+
+            <h3>
+                ✅ Complaint Saved Successfully!
+            </h3>
+
+            <div class="result-item">
+                Complaint ID:
+                <span class="complaint-id" id="complaintId"></span>
+            </div>
+
+            <div class="result-item">
+                AI Waste Type:
+                <strong id="wasteType"></strong>
+            </div>
+
+            <div class="result-item">
+                AI Confidence:
+                <strong id="confidence"></strong>
+            </div>
+
+            <div class="result-item">
+                Status:
+                <strong id="status"></strong>
+            </div>
+
+            <div class="result-item">
+    ♻️ AI Recommendation:
+    <strong id="recommendation"></strong>
+</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+// =====================================================
+// CHECK LOGGED-IN USER
+// =====================================================
+
+const loggedInUserId =
+    localStorage.getItem("userId");
+
+const loggedInUserName =
+    localStorage.getItem("userName");
+
+const userInfo =
+    document.getElementById("userInfo");
+
+
+if (!loggedInUserId) {
+
+    userInfo.innerHTML =
+        "❌ User information not found. Please log in again.";
+
+} else {
+
+    userInfo.innerHTML =
+        "👤 " +
+        (loggedInUserName || "User") +
+        " | User ID: " +
+        loggedInUserId;
+
+}
+
+
+
+// =====================================================
+// GET GPS LOCATION
+// =====================================================
+
+function getLocation() {
+
+    const result =
+        document.getElementById("locationResult");
+
+
+    if (!navigator.geolocation) {
+
+        result.innerHTML =
+            "❌ GPS is not supported by this browser.";
+
+        return;
+    }
+
+
+    result.innerHTML =
+        "📍 Getting your current location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+
+            document.getElementById("latitude").value =
+                latitude;
+
+            document.getElementById("longitude").value =
+                longitude;
+
+
+            result.innerHTML =
+                "✅ Location detected<br><br>" +
+                "Latitude: " +
+                latitude.toFixed(6) +
+                "<br>" +
+                "Longitude: " +
+                longitude.toFixed(6);
+
+        },
+
+        function(error) {
+
+            console.error("GPS error:", error);
+
+            result.innerHTML =
+                "❌ Unable to get location.<br>" +
+                "Please allow location access.";
+
+        },
+
+        {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+        }
+
+    );
+
+}
+
+
+
+// =====================================================
+// IMAGE STATUS
+// =====================================================
+
+document
+    .getElementById("wasteImage")
+    .addEventListener("change", function() {
+
+        const imageStatus =
+            document.getElementById("imageStatus");
+
+
+        if (this.files.length === 0) {
+
+            imageStatus.innerHTML =
+                "Please select an image.";
+
+            return;
+        }
+
+
+        const image = this.files[0];
+
+
+        if (!image.type.startsWith("image/")) {
+
+            imageStatus.innerHTML =
+                "❌ Please select a valid image.";
+
+            this.value = "";
+
+            return;
+        }
+
+
+        imageStatus.innerHTML =
+            "✅ Image selected: " +
+            image.name;
+
+    });
+
+
+
+// =====================================================
+// SUBMIT REPORT
+// =====================================================
+
+async function submitReport() {
+
+
+    // GET USER ID AUTOMATICALLY
+
+    const userId =
+        localStorage.getItem("userId");
+
+
+    const category =
+        document.getElementById("category").value;
+
+
+    const description =
+        document.getElementById("description")
+            .value.trim();
+
+
+    const latitude =
+        document.getElementById("latitude").value;
+
+
+    const longitude =
+        document.getElementById("longitude").value;
+
+
+    const imageInput =
+        document.getElementById("wasteImage");
+
+
+    const message =
+        document.getElementById("message");
+
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+
+    const resultBox =
+        document.getElementById("resultBox");
+
+
+    resultBox.style.display =
+        "none";
+
+
+    message.className =
+        "message";
+
+
+    message.innerHTML =
+        "";
+
+
+
+    // =================================================
+    // VALIDATE LOGIN
+    // =================================================
+
+    if (!userId) {
+
+        showError(
+            "⚠️ User information not found. Please log in again."
+        );
+
+        return;
+    }
+
+
+
+    // =================================================
+    // VALIDATE CATEGORY
+    // =================================================
+
+    if (!category) {
+
+        showError(
+            "⚠️ Please select a waste category."
+        );
+
+        return;
+    }
+
+
+
+    // =================================================
+    // VALIDATE DESCRIPTION
+    // =================================================
+
+    if (!description) {
+
+        showError(
+            "⚠️ Please enter a waste description."
+        );
+
+        return;
+    }
+
+
+
+    // =================================================
+    // VALIDATE GPS
+    // =================================================
+
+    if (!latitude || !longitude) {
+
+        showError(
+            "⚠️ Please click 'Get My Current Location' first."
+        );
+
+        return;
+    }
+
+
+
+    // =================================================
+    // VALIDATE IMAGE
+    // =================================================
+
+    if (imageInput.files.length === 0) {
+
+        showError(
+            "⚠️ Please select a waste image."
+        );
+
+        return;
+    }
+
+
+    const image =
+        imageInput.files[0];
+
+
+    if (!image.type.startsWith("image/")) {
+
+        showError(
+            "⚠️ Please select a valid image file."
+        );
+
+        return;
+    }
+
+
+
+    // =================================================
+    // CREATE LOCATION
+    // =================================================
+
+    const location =
+        "Category: " +
+        category +
+        ", Latitude: " +
+        latitude +
+        ", Longitude: " +
+        longitude;
+
+
+
+    // =================================================
+    // CREATE FORM DATA
+    // =================================================
+
+    const formData =
+        new FormData();
+
+
+    formData.append(
+        "userId",
+        userId
+    );
+
+
+    formData.append(
+        "description",
+        description
+    );
+
+
+    formData.append(
+        "location",
+        location
+    );
+
+
+    formData.append(
+        "image",
+        image
+    );
+
+
+
+    // =================================================
+    // DISABLE BUTTON
+    // =================================================
+
+    submitButton.disabled =
+        true;
+
+
+    submitButton.innerHTML =
+        "🤖 Processing...";
+
+
+    showInfo(
+        "📤 Uploading image...<br>" +
+        "🤖 AI is analyzing the waste..."
+    );
+
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/complaints/with-image",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        console.log(
+            "Backend response:",
+            responseText
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                responseText ||
+                "Failed to submit complaint."
+            );
+        }
+
+
+        let result;
+
+
+        try {
+
+            result =
+                JSON.parse(responseText);
+
+        } catch (error) {
+
+            throw new Error(
+                "Invalid response received from Spring Boot."
+            );
+
+        }
+
+
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        console.log(
+            "Complaint saved:",
+            result
+        );
+
+
+        showSuccess(
+            "✅ Waste report submitted successfully!"
+        );
+
+
+        document.getElementById("complaintId").innerHTML =
+            result.complaintId;
+
+
+        document.getElementById("wasteType").innerHTML =
+            result.wasteType || "unknown";
+
+
+        document.getElementById("confidence").innerHTML =
+            result.confidence + "%";
+
+
+        document.getElementById("status").innerHTML =
+            result.status || "PENDING";
+
+            // =================================================
+// AI WASTE RECOMMENDATION
+// =================================================
+
+const wasteType =
+    (result.wasteType || "unknown")
+        .toLowerCase();
+
+let recommendation =
+    "Please dispose of this waste responsibly.";
+
+if (wasteType.includes("plastic")) {
+
+    recommendation =
+        "Separate plastic waste and send it for recycling.";
+
+} else if (
+    wasteType.includes("paper") ||
+    wasteType.includes("cardboard")
+) {
+
+    recommendation =
+        "Keep paper and cardboard dry and send them for recycling.";
+
+} else if (wasteType.includes("glass")) {
+
+    recommendation =
+        "Handle glass carefully and send it to a glass recycling facility.";
+
+} else if (wasteType.includes("metal")) {
+
+    recommendation =
+        "Separate metal waste and send it for metal recycling.";
+
+} else if (wasteType.includes("organic")) {
+
+    recommendation =
+        "Place organic waste in a composting or wet-waste collection system.";
+
+} else if (wasteType.includes("e-waste")) {
+
+    recommendation =
+        "Do not mix e-waste with regular waste. Send it to an authorized e-waste collection center.";
+
+} else if (wasteType.includes("textile")) {
+
+    recommendation =
+        "Reuse or donate usable textiles and send damaged textiles for recycling.";
+
+} else if (wasteType.includes("other")) {
+
+    recommendation =
+        "Dispose of this waste according to your local waste-management guidelines.";
+}
+
+document.getElementById("recommendation").innerHTML =
+    recommendation;
+
+
+        resultBox.style.display =
+            "block";
+
+
+        document.getElementById("imageStatus").innerHTML =
+            "✅ Image uploaded successfully.";
+
+
+        // Reset report fields only.
+        // User ID is NOT reset because it is stored in login.
+
+        document.getElementById("category").value =
+            "";
+
+        document.getElementById("description").value =
+            "";
+
+        document.getElementById("wasteImage").value =
+            "";
+
+        document.getElementById("latitude").value =
+            "";
+
+        document.getElementById("longitude").value =
+            "";
+
+        document.getElementById("locationResult").innerHTML =
+            "Report submitted successfully.";
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Complaint submission error:",
+            error
+        );
+
+
+        showError(
+            "❌ Unable to submit report.<br><br>" +
+            error.message
+        );
+
+    }
+
+
+    finally {
+
+        submitButton.disabled =
+            false;
+
+        submitButton.innerHTML =
+            "🚨 Submit Waste Report";
+
+    }
+
+}
+
+
+
+// =====================================================
+// MESSAGES
+// =====================================================
+
+function showSuccess(text) {
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message success";
+
+    message.innerHTML =
+        text;
+
+}
+
+
+function showError(text) {
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message error";
+
+    message.innerHTML =
+        text;
+
+}
+
+
+function showInfo(text) {
+
+    const message =
+        document.getElementById("message");
+
+    message.className =
+        "message info";
+
+    message.innerHTML =
+        text;
+
+}
+
+
+
+// =====================================================
+// BACK TO DASHBOARD
+// =====================================================
+
+function goBack() {
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

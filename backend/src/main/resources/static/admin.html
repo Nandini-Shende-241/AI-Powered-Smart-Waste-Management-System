@@ -1,0 +1,2786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Admin Dashboard - Smart Waste Management
+    </title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #1b5e20;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .logout-btn {
+            background-color: white;
+            color: #1b5e20;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: #1b5e20;
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.1);
+
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .section {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.1);
+
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #1b5e20;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th {
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .progress {
+            background-color: #cfe2ff;
+            color: #084298;
+        }
+
+        .completed {
+            background-color: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .rejected {
+            background-color: #f8d7da;
+            color: #842029;
+        }
+
+        select {
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .update-btn {
+            margin-top: 6px;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update-btn:hover {
+            background-color: #1b5e20;
+        }
+
+        .feedback-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            color: #f9a825;
+            font-size: 20px;
+        }
+
+        .loading {
+            color: #666;
+            padding: 15px;
+        }
+
+        .error {
+            color: #c62828;
+            padding: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+        }
+
+    </style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+
+<body>
+    <div
+    id="imageModal"
+    style="
+        display:none;
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.8);
+        z-index:9999;
+        text-align:center;
+    "
+    onclick="closeImage()">
+
+    <img
+        id="modalImage"
+        style="
+            max-width:90%;
+            max-height:90%;
+            margin-top:30px;
+            border-radius:10px;
+        ">
+
+</div>
+
+<header>
+
+    <h1>
+        ♻️ Smart Waste Management - Admin
+    </h1>
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+
+        Logout
+
+    </button>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="welcome">
+
+        <h2>
+            👋 Welcome, Administrator
+        </h2>
+
+        <p>
+            Monitor and manage citizen waste reports.
+        </p>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat-card">
+
+            <h3>
+                📋 Total Complaints
+            </h3>
+
+            <div
+                class="stat-number"
+                id="totalComplaints">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                ⏳ Pending
+            </h3>
+
+            <div
+                class="stat-number"
+                id="pendingComplaints">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                🔄 In Progress
+            </h3>
+
+            <div
+                class="stat-number"
+                id="inProgressComplaints">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                ✅ Completed
+            </h3>
+
+            <div
+                class="stat-number"
+                id="completedComplaints">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h3>
+                ❌ Rejected
+            </h3>
+
+            <div
+                class="stat-number"
+                id="rejectedComplaints">
+
+                0
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+     AI WASTE INSIGHTS & RECOMMENDATIONS
+     ===================================================== --><div class="section"><h2>
+    🤖 AI Waste Insights & Recommendations
+</h2>
+
+<div style="
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit, minmax(200px, 1fr));
+    gap:20px;
+    margin-bottom:20px;
+">
+
+    <div class="stat-card">
+        <h3>♻️ Most Common Waste</h3>
+        <div class="stat-number" id="mostCommonWaste">
+            -
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <h3>📋 Pending Complaints</h3>
+        <div class="stat-number" id="insightPending">
+            0
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <h3>🚨 High Priority</h3>
+        <div class="stat-number" id="insightHighPriority">
+            0
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <h3>🤖 AI Confidence</h3>
+        <div class="stat-number" id="averageConfidence">
+            0
+        </div>
+    </div>
+
+</div>
+
+<div style="
+    background:#f1f8e9;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:15px;
+">
+
+    <h3 style="color:#1b5e20; margin-bottom:10px;">
+        💡 AI Insight
+    </h3>
+
+    <p id="aiInsight">
+        Loading AI insights...
+    </p>
+
+</div>
+
+<div style="
+    background:#fff8e1;
+    padding:20px;
+    border-radius:10px;
+">
+
+    <h3 style="color:#e65100; margin-bottom:10px;">
+        ✅ Recommendation
+    </h3>
+
+    <p id="aiRecommendation">
+        Loading recommendation...
+    </p>
+
+</div>
+
+</div>
+
+    <!-- =====================================================
+     ADMIN ANALYTICS
+     ===================================================== -->
+
+<div class="section">
+
+    <h2>
+        📊 Waste Management Analytics
+    </h2>
+
+    <div style="
+        display:grid;
+        grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+        gap:25px;
+    ">
+
+        <!-- STATUS CHART -->
+
+        <div style="
+            background:#f9f9f9;
+            padding:20px;
+            border-radius:10px;
+        ">
+
+            <h3 style="
+                color:#1b5e20;
+                margin-bottom:15px;
+            ">
+                📋 Complaints by Status
+            </h3>
+
+            <canvas id="statusChart"></canvas>
+
+        </div>
+
+
+        <!-- WASTE TYPE CHART -->
+
+        <div style="
+            background:#f9f9f9;
+            padding:20px;
+            border-radius:10px;
+        ">
+
+            <h3 style="
+                color:#1b5e20;
+                margin-bottom:15px;
+            ">
+                ♻️ Complaints by Waste Type
+            </h3>
+
+            <canvas id="wasteTypeChart"></canvas>
+
+        </div>
+
+
+        <!-- PRIORITY CHART -->
+
+        <div style="
+            background:#f9f9f9;
+            padding:20px;
+            border-radius:10px;
+        ">
+
+            <h3 style="
+                color:#1b5e20;
+                margin-bottom:15px;
+            ">
+                🚦 Complaints by Priority
+            </h3>
+
+            <canvas id="priorityChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <div class="section">
+
+    <h2>
+        🔎 Search Complaint by ID
+    </h2>
+
+    <div style="
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+    ">
+
+        <input
+            type="number"
+            id="complaintSearchId"
+            placeholder="Enter Complaint ID"
+            style="
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:6px;
+                width:250px;
+            "
+        >
+
+        <button
+            class="update-btn"
+            onclick="searchComplaintById()"
+        >
+            🔎 Search
+        </button>
+
+        <button
+            class="update-btn"
+            onclick="loadComplaints()"
+        >
+            🔄 Show All
+        </button>
+
+    </div>
+
+    <div
+        id="searchResult"
+        style="margin-top:20px;"
+    ></div>
+
+</div>
+
+    <div class="section">
+
+        <h2>
+            📋 All Waste Complaints
+        </h2>
+
+        <div style="
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+">
+
+    <select
+        id="statusFilter"
+        onchange="filterComplaintsByStatus()"
+        style="
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:6px;
+        "
+    >
+
+        <option value="ALL">
+            All Statuses
+        </option>
+
+        <option value="PENDING">
+            Pending
+        </option>
+
+        <option value="IN PROGRESS">
+            In Progress
+        </option>
+
+        <option value="COMPLETED">
+            Completed
+        </option>
+
+        <option value="REJECTED">
+            Rejected
+        </option>
+
+    </select>
+
+</div>
+
+        <div
+            id="complaintsMessage"
+            class="loading">
+
+            Loading complaints...
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>User ID</th>
+
+                    <th>Waste Type</th>
+
+                    <th>AI Confidence</th>
+
+                    <th>Description</th>
+
+                    <th>Location</th>
+
+                    <th>Map</th>
+
+                    <th>Image</th>
+
+                    <th>Status</th>
+
+                    <th>Priority</th>
+
+                    <th>Assign Team</th>
+
+                    <th>Update</th>
+
+                    <th>Created</th>
+
+                    <th>History</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="complaintsTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- =====================================================
+     CLEANUP TEAMS
+     ===================================================== -->
+
+<div class="section">
+
+    <h2>
+        🚛 Cleanup Teams
+    </h2>
+
+    <!-- ADD TEAM -->
+
+    <h3 style="margin-bottom: 15px;">
+        ➕ Add New Cleanup Team
+    </h3>
+
+    <div style="
+        display:grid;
+        grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+        gap:15px;
+        margin-bottom:20px;
+    ">
+
+        <input
+            type="text"
+            id="teamName"
+            placeholder="Team Name"
+            style="
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+        <input
+            type="text"
+            id="teamLeader"
+            placeholder="Team Leader"
+            style="
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+        <input
+            type="text"
+            id="teamPhone"
+            placeholder="Phone Number"
+            style="
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+        <select
+            id="teamStatus"
+            style="
+                padding:10px;
+                border:1px solid #ccc;
+                border-radius:6px;
+            "
+        >
+
+            <option value="AVAILABLE">
+                AVAILABLE
+            </option>
+
+            <option value="BUSY">
+                BUSY
+            </option>
+
+            <option value="UNAVAILABLE">
+                UNAVAILABLE
+            </option>
+
+        </select>
+
+    </div>
+
+    <button
+        class="update-btn"
+        onclick="createCleanupTeam()"
+    >
+        ➕ Create Team
+    </button>
+
+
+    <!-- TEAM LIST -->
+
+    <h3 style="
+        margin-top:30px;
+        margin-bottom:15px;
+    ">
+        📋 Existing Cleanup Teams
+    </h3>
+
+    <div
+        id="cleanupTeamsMessage"
+        class="loading"
+    >
+        Loading cleanup teams...
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Team Name</th>
+
+                    <th>Team Leader</th>
+
+                    <th>Phone</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+                id="cleanupTeamsTable"
+            >
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+    <div class="section">
+
+        <h2>
+            ⭐ Citizen Feedback
+        </h2>
+
+        <div
+            id="feedbackContainer">
+
+            <p class="loading">
+                Loading feedback...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<footer>
+
+    AI Powered Smart Waste Management System
+
+</footer>
+
+
+<script>
+
+
+// =====================================================
+// ADMIN ACCESS PROTECTION
+// =====================================================
+
+const userRole =
+    (localStorage.getItem("userRole") || "")
+        .toUpperCase()
+        .replace("ROLE_", "");
+
+
+if (userRole !== "ADMIN") {
+
+    alert(
+        "❌ Access denied. Admins only."
+    );
+
+    window.location.href =
+        "dashboard.html";
+}
+
+
+// =====================================================
+// LOAD STATISTICS
+// =====================================================
+
+async function loadStatistics() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/statistics"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load statistics"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "totalComplaints"
+        ).innerText =
+            data.totalComplaints;
+
+
+        document.getElementById(
+            "pendingComplaints"
+        ).innerText =
+            data.pendingComplaints;
+
+
+        document.getElementById(
+            "inProgressComplaints"
+        ).innerText =
+            data.inProgressComplaints;
+
+
+        document.getElementById(
+            "completedComplaints"
+        ).innerText =
+            data.completedComplaints;
+
+
+        document.getElementById(
+            "rejectedComplaints"
+        ).innerText =
+            data.rejectedComplaints;
+
+
+    } catch (error) {
+
+        console.error(
+            "Statistics error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// LOAD COMPLAINTS
+// =====================================================
+
+async function loadComplaints() {
+
+    const table =
+        document.getElementById(
+            "complaintsTable"
+        );
+
+
+    const message =
+        document.getElementById(
+            "complaintsMessage"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/complaints"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load complaints"
+            );
+
+        }
+
+
+        const complaints =
+            await response.json();
+
+
+        table.innerHTML = "";
+
+
+        if (!complaints.length) {
+
+            message.innerText =
+                "No complaints found.";
+
+            return;
+
+        }
+
+
+        message.innerText =
+            "";
+
+
+        complaints.forEach(
+            function(complaint) {
+
+                console.log("IMAGE PATH:", complaint.imagePath);
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const status =
+                    complaint.status ||
+                    "PENDING";
+
+
+                let statusClass =
+                    "pending";
+
+
+                if (
+                    status === "IN PROGRESS"
+                ) {
+
+                    statusClass =
+                        "progress";
+
+                } else if (
+                    status === "COMPLETED"
+                ) {
+
+                    statusClass =
+                        "completed";
+
+                } else if (
+                    status === "REJECTED"
+                ) {
+
+                    statusClass =
+                        "rejected";
+
+                }
+
+
+                row.innerHTML =
+
+                    `
+                    <td>
+                        ${complaint.id}
+                    </td>
+
+                    <td>
+                        ${complaint.userId}
+                    </td>
+
+                    <td>
+                        ${complaint.wasteType || "Unknown"}
+                    </td>
+
+                    <td>
+                        ${complaint.confidence ?? 0}%
+                    </td>
+
+                    <td>
+                        ${complaint.description || ""}
+                    </td>
+
+                    <td>
+                        ${complaint.location || ""}
+                    </td>
+
+                    <td>
+    ${
+        complaint.location
+        ?
+        `<button
+            class="update-btn"
+            onclick="openComplaintMap('${complaint.location}')">
+            
+            📍 View Map
+            
+        </button>`
+        :
+        "No Location"
+    }
+</td>
+                    
+<td>
+
+    ${
+        complaint.imagePath
+        ?
+        `<img
+            src="/uploads/${complaint.imagePath
+               .split('\\')
+               .pop()
+               .split('/')
+               .pop()}"
+            width="120"
+            height="100"
+            style="
+                object-fit:cover;
+                border-radius:8px;
+                border:1px solid #ccc;
+                cursor:pointer;
+                "
+                onclick="openImage(this.src)"
+            ">`
+        :
+        "No Image"
+    }
+
+</td>
+
+                    <td>
+
+                        <span
+                            class="status ${statusClass}">
+
+                            ${status}
+
+                        </span>
+
+                    </td>
+                       <td>
+
+    <select id="priority-${complaint.id}">
+
+        <option value="LOW"
+            ${(complaint.priority || "MEDIUM") === "LOW"
+                ? "selected"
+                : ""}>
+            🟢 LOW
+        </option>
+
+        <option value="MEDIUM"
+            ${(complaint.priority || "MEDIUM") === "MEDIUM"
+                ? "selected"
+                : ""}>
+            🟡 MEDIUM
+        </option>
+
+        <option value="HIGH"
+            ${(complaint.priority || "MEDIUM") === "HIGH"
+                ? "selected"
+                : ""}>
+            🔴 HIGH
+        </option>
+
+    </select>
+
+    <br>
+
+    <button
+        class="update-btn"
+        onclick="updatePriority(${complaint.id})">
+
+        Update
+
+    </button>
+
+</td>
+                    <td>
+
+    <select
+        id="team-${complaint.id}"
+        style="
+            padding:7px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        "
+    >
+
+        <option value="">
+            Select Team
+        </option>
+
+    </select>
+
+    <br>
+
+    <button
+        class="update-btn"
+        onclick="assignTeam(${complaint.id})">
+
+        🚛 Assign
+
+    </button>
+
+</td>
+                    <td>
+
+                        <select
+                            id="status-${complaint.id}">
+
+                            <option value="PENDING"
+                                ${status === "PENDING"
+                                    ? "selected"
+                                    : ""}>
+
+                                PENDING
+
+                            </option>
+
+                            <option value="IN PROGRESS"
+                                ${status === "IN PROGRESS"
+                                    ? "selected"
+                                    : ""}>
+
+                                IN PROGRESS
+
+                            </option>
+
+                            <option value="COMPLETED"
+                                ${status === "COMPLETED"
+                                    ? "selected"
+                                    : ""}>
+
+                                COMPLETED
+
+                            </option>
+
+                            <option value="REJECTED"
+                                ${status === "REJECTED"
+                                    ? "selected"
+                                    : ""}>
+
+                                REJECTED
+
+                            </option>
+
+                        </select>
+
+                        <br>
+
+                        <button
+                            class="update-btn"
+                            onclick="updateStatus(${complaint.id})">
+
+                            Update
+
+                        </button>
+
+                    </td>
+
+                    <td>
+                        ${complaint.createdAt || ""}
+                    </td>
+                    
+                    <td>
+                    <button
+        class="update-btn"
+        onclick="viewComplaintHistory(${complaint.id})">
+
+        📜 View History
+
+    </button>
+
+</td>
+`;
+
+                table.appendChild(row);
+
+            }
+        );
+
+        loadAvailableTeams();
+
+
+    } catch (error) {
+
+        console.error(
+            "Complaint loading error:",
+            error
+        );
+
+
+        message.className =
+            "error";
+
+
+        message.innerText =
+            "❌ Unable to load complaints.";
+
+    }
+
+}
+
+
+
+// =====================================================
+// UPDATE STATUS
+// =====================================================
+
+async function updateStatus(complaintId) {
+
+    const select =
+        document.getElementById(
+            "status-" + complaintId
+        );
+
+
+    const newStatus =
+        select.value;
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                "/api/admin/complaints/" +
+                complaintId +
+                "/status",
+
+                {
+
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        status:
+                            newStatus
+
+                    })
+
+                }
+
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                responseText ||
+                "Failed to update status"
+            );
+
+        }
+
+
+        alert(
+            "✅ Complaint status updated successfully!"
+        );
+
+
+        await loadComplaints();
+
+        await loadStatistics();
+
+
+    } catch (error) {
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        alert(
+            "❌ Unable to update complaint status."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// LOAD FEEDBACK
+// =====================================================
+
+async function loadFeedback() {
+
+    const container =
+        document.getElementById(
+            "feedbackContainer"
+        );
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/feedback"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load feedback"
+            );
+
+        }
+
+
+        const feedbackList =
+            await response.json();
+
+
+        container.innerHTML = "";
+
+
+        if (!feedbackList.length) {
+
+            container.innerHTML =
+                "<p>No feedback submitted yet.</p>";
+
+            return;
+
+        }
+
+
+        feedbackList.forEach(
+            function(feedback) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "feedback-card";
+
+
+                let stars = "";
+
+
+                for (
+                    let i = 1;
+                    i <= 5;
+                    i++
+                ) {
+
+                    stars +=
+                        i <= feedback.rating
+                            ? "⭐"
+                            : "☆";
+
+                }
+
+
+                card.innerHTML =
+
+                    `
+                    <p>
+                        <strong>
+                            User ID:
+                        </strong>
+
+                        ${feedback.userId}
+                    </p>
+
+                    <p class="stars">
+                        ${stars}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Comment:
+                        </strong>
+
+                        ${feedback.comment}
+                    </p>
+
+                    <p>
+                        <strong>
+                            Date:
+                        </strong>
+
+                        ${feedback.createdAt}
+                    </p>
+                    `;
+
+
+                container.appendChild(card);
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Feedback loading error:",
+            error
+        );
+
+
+        container.innerHTML =
+            "<p class='error'>" +
+            "❌ Unable to load feedback." +
+            "</p>";
+
+    }
+
+}
+
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+function logout() {
+
+    localStorage.removeItem(
+        "userId"
+    );
+
+    localStorage.removeItem(
+        "userName"
+    );
+
+    localStorage.removeItem(
+        "userEmail"
+    );
+
+    localStorage.removeItem(
+        "userRole"
+    );
+
+    localStorage.removeItem(
+        "rewardPoints"
+    );
+
+    window.location.href =
+        "login.html";
+
+}
+function openImage(imageUrl) {
+
+    document.getElementById(
+        "modalImage"
+    ).src = imageUrl;
+
+    document.getElementById(
+        "imageModal"
+    ).style.display = "block";
+}
+
+function closeImage() {
+
+    document.getElementById(
+        "imageModal"
+    ).style.display = "none";
+}
+
+
+// =====================================================
+// LOAD ADMIN DASHBOARD
+// =====================================================
+
+loadStatistics();
+
+loadComplaints();
+
+loadFeedback();
+
+loadCleanupTeams();
+
+loadAnalytics();
+
+loadWasteInsights();
+
+// =====================================================
+// ADMIN ANALYTICS
+// =====================================================
+
+let statusChartInstance = null;
+let wasteTypeChartInstance = null;
+let priorityChartInstance = null;
+
+
+async function loadAnalytics() {
+
+    try {
+
+        const response =
+            await fetch("/api/admin/complaints");
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load analytics data"
+            );
+
+        }
+
+        const complaints =
+            await response.json();
+
+
+        // =================================================
+        // STATUS DATA
+        // =================================================
+
+        const statusCounts = {
+            "PENDING": 0,
+            "IN PROGRESS": 0,
+            "COMPLETED": 0,
+            "REJECTED": 0
+        };
+
+
+        complaints.forEach(function(complaint) {
+
+            const status =
+                (complaint.status || "PENDING")
+                    .toUpperCase();
+
+            if (statusCounts.hasOwnProperty(status)) {
+
+                statusCounts[status]++;
+
+            }
+
+        });
+
+
+        // =================================================
+        // WASTE TYPE DATA
+        // =================================================
+
+        const wasteTypeCounts = {};
+
+
+        complaints.forEach(function(complaint) {
+
+            const wasteType =
+                complaint.wasteType || "Unknown";
+
+            wasteTypeCounts[wasteType] =
+                (wasteTypeCounts[wasteType] || 0) + 1;
+
+        });
+
+
+        // =================================================
+        // PRIORITY DATA
+        // =================================================
+
+        const priorityCounts = {
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 0
+        };
+
+
+        complaints.forEach(function(complaint) {
+
+            const priority =
+                (complaint.priority || "MEDIUM")
+                    .toUpperCase();
+
+            if (priorityCounts.hasOwnProperty(priority)) {
+
+                priorityCounts[priority]++;
+
+            }
+
+        });
+
+
+        // =================================================
+        // STATUS CHART
+        // =================================================
+
+        const statusCanvas =
+            document.getElementById("statusChart");
+
+
+        if (statusChartInstance) {
+
+            statusChartInstance.destroy();
+
+        }
+
+
+        statusChartInstance =
+            new Chart(
+                statusCanvas,
+                {
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: [
+                            "Pending",
+                            "In Progress",
+                            "Completed",
+                            "Rejected"
+                        ],
+
+                        datasets: [
+                            {
+                                data: [
+                                    statusCounts["PENDING"],
+                                    statusCounts["IN PROGRESS"],
+                                    statusCounts["COMPLETED"],
+                                    statusCounts["REJECTED"]
+                                ]
+                            }
+                        ]
+
+                    },
+
+                    options: {
+                        responsive: true
+                    }
+
+                }
+            );
+
+
+        // =================================================
+        // WASTE TYPE CHART
+        // =================================================
+
+        const wasteCanvas =
+            document.getElementById(
+                "wasteTypeChart"
+            );
+
+
+        if (wasteTypeChartInstance) {
+
+            wasteTypeChartInstance.destroy();
+
+        }
+
+
+        wasteTypeChartInstance =
+            new Chart(
+                wasteCanvas,
+                {
+                    type: "bar",
+
+                    data: {
+
+                        labels:
+                            Object.keys(
+                                wasteTypeCounts
+                            ),
+
+                        datasets: [
+                            {
+                                label:
+                                    "Complaints",
+
+                                data:
+                                    Object.values(
+                                        wasteTypeCounts
+                                    )
+                            }
+                        ]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        scales: {
+
+                            y: {
+                                beginAtZero: true
+                            }
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+        // =================================================
+        // PRIORITY CHART
+        // =================================================
+
+        const priorityCanvas =
+            document.getElementById(
+                "priorityChart"
+            );
+
+
+        if (priorityChartInstance) {
+
+            priorityChartInstance.destroy();
+
+        }
+
+
+        priorityChartInstance =
+            new Chart(
+                priorityCanvas,
+                {
+                    type: "pie",
+
+                    data: {
+
+                        labels: [
+                            "Low",
+                            "Medium",
+                            "High"
+                        ],
+
+                        datasets: [
+                            {
+                                data: [
+                                    priorityCounts["LOW"],
+                                    priorityCounts["MEDIUM"],
+                                    priorityCounts["HIGH"]
+                                ]
+                            }
+                        ]
+
+                    },
+
+                    options: {
+                        responsive: true
+                    }
+
+                }
+            );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Analytics error:",
+            error
+        );
+
+    }
+
+}
+
+async function loadAvailableTeams() {
+
+    try {
+
+        const response =
+            await fetch("/api/cleanup-teams");
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load cleanup teams."
+            );
+        }
+
+        const teams =
+            await response.json();
+
+
+        // Find every Assign Team dropdown
+        const selects =
+            document.querySelectorAll(
+                'select[id^="team-"]'
+            );
+
+
+        selects.forEach(function(select) {
+
+            // Keep Select Team option
+            select.innerHTML =
+                `<option value="">
+                    Select Team
+                </option>`;
+
+
+            // Add only AVAILABLE teams
+            teams.forEach(function(team) {
+
+                if (
+                    team.status &&
+                    team.status.toUpperCase() ===
+                    "AVAILABLE"
+                ) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value =
+                        team.id;
+
+                    option.textContent =
+                        team.teamName;
+
+                    select.appendChild(
+                        option
+                    );
+                }
+
+            });
+
+        });
+
+
+    } catch (error) {
+
+        console.error(
+            "Available teams loading error:",
+            error
+        );
+
+    }
+
+}
+// =====================================================
+// CLEANUP TEAMS
+// =====================================================
+
+async function loadCleanupTeams() {
+
+    const table =
+        document.getElementById("cleanupTeamsTable");
+
+    const message =
+        document.getElementById("cleanupTeamsMessage");
+
+    try {
+
+        const response =
+            await fetch("/api/cleanup-teams");
+
+        if (!response.ok) {
+            throw new Error("Failed to load cleanup teams.");
+        }
+
+        const teams =
+            await response.json();
+
+        table.innerHTML = "";
+
+        if (teams.length === 0) {
+
+            message.innerText =
+                "No cleanup teams found.";
+
+            return;
+        }
+
+        message.innerText = "";
+
+        teams.forEach(function(team) {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>
+                    ${team.id}
+                </td>
+
+                <td>
+                    ${team.teamName || ""}
+                </td>
+
+                <td>
+                    ${team.teamLeader || ""}
+                </td>
+
+                <td>
+                    ${team.phone || ""}
+                </td>
+
+                <td>
+                    ${team.status || ""}
+                </td>
+
+                <td>
+
+                    <button
+                        class="update-btn"
+                        onclick="editCleanupTeam(${team.id})">
+
+                        ✏️ Edit
+
+                    </button>
+
+                    <button
+                        class="update-btn"
+                        onclick="deleteCleanupTeam(${team.id})"
+                        style="background-color:#c62828;">
+
+                        🗑️ Delete
+
+                    </button>
+
+                </td>
+
+            `;
+
+            table.appendChild(row);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Cleanup teams loading error:",
+            error
+        );
+
+        message.className = "error";
+
+        message.innerText =
+            "❌ Unable to load cleanup teams.";
+
+    }
+}
+
+
+
+// =====================================================
+// CREATE CLEANUP TEAM
+// =====================================================
+
+async function createCleanupTeam() {
+
+    const teamName =
+        document.getElementById("teamName")
+            .value
+            .trim();
+
+    const teamLeader =
+        document.getElementById("teamLeader")
+            .value
+            .trim();
+
+    const phone =
+        document.getElementById("teamPhone")
+            .value
+            .trim();
+
+    const status =
+        document.getElementById("teamStatus")
+            .value;
+
+
+    if (!teamName) {
+
+        alert("⚠️ Please enter a team name.");
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/cleanup-teams",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        teamName:
+                            teamName,
+
+                        teamLeader:
+                            teamLeader,
+
+                        phone:
+                            phone,
+
+                        status:
+                            status
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+            throw new Error(
+                errorText ||
+                "Failed to create team."
+            );
+        }
+
+
+        alert(
+            "✅ Cleanup team created successfully!"
+        );
+
+
+        // Clear form
+
+        document.getElementById("teamName")
+            .value = "";
+
+        document.getElementById("teamLeader")
+            .value = "";
+
+        document.getElementById("teamPhone")
+            .value = "";
+
+        document.getElementById("teamStatus")
+            .value = "AVAILABLE";
+
+
+        // Reload teams
+
+        loadCleanupTeams();
+
+
+    } catch (error) {
+
+        console.error(
+            "Create team error:",
+            error
+        );
+
+        alert(
+            "❌ Unable to create cleanup team."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// EDIT CLEANUP TEAM
+// =====================================================
+
+async function editCleanupTeam(id) {
+
+    const teamName =
+        prompt("Enter new team name:");
+
+    if (teamName === null) {
+        return;
+    }
+
+
+    const teamLeader =
+        prompt("Enter team leader:");
+
+    if (teamLeader === null) {
+        return;
+    }
+
+
+    const phone =
+        prompt("Enter phone number:");
+
+    if (phone === null) {
+        return;
+    }
+
+
+    const status =
+        prompt(
+            "Enter status (AVAILABLE / BUSY / UNAVAILABLE):"
+        );
+
+    if (status === null) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/cleanup-teams/" + id,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        teamName:
+                            teamName,
+
+                        teamLeader:
+                            teamLeader,
+
+                        phone:
+                            phone,
+
+                        status:
+                            status.toUpperCase()
+
+                    })
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to update team."
+            );
+
+        }
+
+
+        alert(
+            "✅ Cleanup team updated successfully!"
+        );
+
+
+        loadCleanupTeams();
+
+
+    } catch (error) {
+
+        console.error(
+            "Update team error:",
+            error
+        );
+
+        alert(
+            "❌ Unable to update cleanup team."
+        );
+
+    }
+
+}
+
+
+
+// =====================================================
+// DELETE CLEANUP TEAM
+// =====================================================
+
+async function deleteCleanupTeam(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this cleanup team?"
+        );
+
+
+    if (!confirmDelete) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/cleanup-teams/" + id,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to delete team."
+            );
+
+        }
+
+
+        alert(
+            "✅ Cleanup team deleted successfully!"
+        );
+
+
+        loadCleanupTeams();
+
+
+    } catch (error) {
+
+        console.error(
+            "Delete team error:",
+            error
+        );
+
+        alert(
+            "❌ Unable to delete cleanup team."
+        );
+
+    }
+
+}
+async function assignTeam(complaintId) {
+
+    const select =
+        document.getElementById(
+            "team-" + complaintId
+        );
+
+    const teamId =
+        select.value;
+
+
+    if (!teamId) {
+
+        alert(
+            "⚠️ Please select a cleanup team."
+        );
+
+        return;
+    }
+
+
+    const confirmAssign =
+        confirm(
+            "Are you sure you want to assign this cleanup team?"
+        );
+
+
+    if (!confirmAssign) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/complaints/" +
+                complaintId +
+                "/assign-team/" +
+                teamId,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Failed to assign cleanup team."
+            );
+        }
+
+
+        alert(
+            "✅ Cleanup team assigned successfully!"
+        );
+
+
+        // Refresh complaints
+        await loadComplaints();
+
+        // Refresh cleanup teams
+        await loadCleanupTeams();
+
+
+    } catch (error) {
+
+        console.error(
+            "Assign team error:",
+            error
+        );
+
+        alert(
+            "❌ " + error.message
+        );
+
+    }
+
+}
+// =====================================================
+// SEARCH COMPLAINT BY ID
+// =====================================================
+
+async function searchComplaintById() {
+
+    const id =
+        document.getElementById(
+            "complaintSearchId"
+        ).value;
+
+    const result =
+        document.getElementById(
+            "searchResult"
+        );
+
+    if (!id) {
+
+        result.innerHTML =
+            "<p class='error'>⚠️ Please enter a complaint ID.</p>";
+
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/complaints/" + id
+            );
+
+        if (!response.ok) {
+
+            if (response.status === 404) {
+
+                result.innerHTML =
+                    "<p class='error'>❌ Complaint not found.</p>";
+
+                return;
+            }
+
+            throw new Error(
+                "Failed to search complaint."
+            );
+        }
+
+        const complaint =
+            await response.json();
+
+        result.innerHTML = `
+
+            <div style="
+                border:1px solid #ddd;
+                border-radius:8px;
+                padding:15px;
+                background:#f9f9f9;
+            ">
+
+                <h3 style="color:#1b5e20;">
+                    Complaint #${complaint.id}
+                </h3>
+
+                <p>
+                    <strong>User ID:</strong>
+                    ${complaint.userId}
+                </p>
+
+                <p>
+                    <strong>Waste Type:</strong>
+                    ${complaint.wasteType || "Unknown"}
+                </p>
+
+                <p>
+                    <strong>Description:</strong>
+                    ${complaint.description || ""}
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    ${complaint.location || ""}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${complaint.status || "PENDING"}
+                </p>
+
+                <p>
+                    <strong>Cleanup Team ID:</strong>
+                    ${complaint.cleanupTeamId || "Not Assigned"}
+                </p>
+
+                <p>
+                    <strong>Created:</strong>
+                    ${complaint.createdAt || ""}
+                </p>
+
+            </div>
+
+        `;
+
+    } catch (error) {
+
+        console.error(
+            "Search complaint error:",
+            error
+        );
+
+        result.innerHTML =
+            "<p class='error'>❌ Unable to search complaint.</p>";
+    }
+}
+// =====================================================
+// FILTER COMPLAINTS BY STATUS
+// =====================================================
+
+async function filterComplaintsByStatus() {
+
+    const selectedStatus =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+    const table =
+        document.getElementById(
+            "complaintsTable"
+        );
+
+    const rows =
+        table.querySelectorAll("tr");
+
+    rows.forEach(function(row) {
+
+        const statusElement =
+            row.querySelector(".status");
+
+        if (!statusElement) {
+            return;
+        }
+
+        const complaintStatus =
+            statusElement.innerText
+                .trim()
+                .toUpperCase();
+
+        if (
+            selectedStatus === "ALL" ||
+            complaintStatus === selectedStatus
+        ) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+}
+    // =====================================================
+// VIEW COMPLAINT STATUS HISTORY
+// =====================================================
+
+async function viewComplaintHistory(complaintId) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/admin/complaints/" +
+                complaintId +
+                "/history"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load status history"
+            );
+        }
+
+        const history =
+            await response.json();
+
+        if (!history.length) {
+
+            alert(
+                "📜 No status history found for this complaint."
+            );
+
+            return;
+        }
+
+        let message =
+            "📜 Complaint #" +
+            complaintId +
+            " Status History\n\n";
+
+        history.forEach(function(item, index) {
+
+            message +=
+                (index + 1) +
+                ". " +
+                item.status +
+                "\n" +
+                "   Changed at: " +
+                item.changedAt +
+                "\n\n";
+
+        });
+
+        alert(message);
+
+    } catch (error) {
+
+        console.error(
+            "Status history error:",
+            error
+        );
+
+        alert(
+            "❌ Unable to load complaint status history."
+        );
+    }
+}
+// =====================================================
+// OPEN COMPLAINT LOCATION ON MAP
+// =====================================================
+
+function openComplaintMap(location) {
+
+    if (!location) {
+
+        alert("❌ Location not available.");
+
+        return;
+    }
+
+    // Extract latitude
+    const latitudeMatch =
+        location.match(/Latitude:\s*([-0-9.]+)/i);
+
+    // Extract longitude
+    const longitudeMatch =
+        location.match(/Longitude:\s*([-0-9.]+)/i);
+
+    if (!latitudeMatch || !longitudeMatch) {
+
+        alert(
+            "❌ GPS coordinates could not be found."
+        );
+
+        return;
+    }
+
+    const latitude =
+        latitudeMatch[1];
+
+    const longitude =
+        longitudeMatch[1];
+
+    const mapUrl =
+        "https://www.openstreetmap.org/?mlat=" +
+        latitude +
+        "&mlon=" +
+        longitude +
+        "#map=18/" +
+        latitude +
+        "/" +
+        longitude;
+
+    window.open(
+        mapUrl,
+        "_blank"
+    );
+}
+
+// =====================================================
+// LOAD AI WASTE INSIGHTS
+// =====================================================
+
+async function loadWasteInsights() {
+
+try {
+
+    const response =
+        await fetch("/api/admin/waste-insights");
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Failed to load AI waste insights"
+        );
+
+    }
+
+    const data =
+        await response.json();
+
+
+    // Most common waste type
+
+    document.getElementById(
+        "mostCommonWaste"
+    ).innerText =
+        data.mostCommonWasteType || "-";
+
+
+    // Pending complaints
+
+    document.getElementById(
+        "insightPending"
+    ).innerText =
+        data.pendingComplaints || 0;
+
+
+    // High priority complaints
+
+    document.getElementById(
+        "insightHighPriority"
+    ).innerText =
+        data.highPriorityComplaints || 0;
+
+
+    // Average AI confidence
+
+    document.getElementById(
+        "averageConfidence"
+    ).innerText =
+        (data.averageConfidence || 0) + "%";
+
+
+    // AI insight
+
+    document.getElementById(
+        "aiInsight"
+    ).innerText =
+        data.insight ||
+        "No AI insight available.";
+
+
+    // Recommendation
+
+    document.getElementById(
+        "aiRecommendation"
+    ).innerText =
+        data.recommendation ||
+        "No recommendation available.";
+
+
+} catch (error) {
+
+    console.error(
+        "AI Waste Insights error:",
+        error
+    );
+
+
+    document.getElementById(
+        "aiInsight"
+    ).innerText =
+        "❌ Unable to load AI insights.";
+
+
+    document.getElementById(
+        "aiRecommendation"
+    ).innerText =
+        "Please try again later.";
+
+}
+
+}
+</script>
+
+
+</body>
+
+</html>

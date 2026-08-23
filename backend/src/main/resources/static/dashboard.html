@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Waste Management - Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .logout-btn {
+            background-color: white;
+            color: #2e7d32;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #256628;
+        }
+
+        .points {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .report-count {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        /* ==========================================
+           CATEGORY STATISTICS
+           ========================================== */
+
+        .category-list {
+            margin-top: 10px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .category-item:last-child {
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: bold;
+            color: #444;
+        }
+
+        .category-number {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .no-category {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ==========================================
+           NOTIFICATIONS
+           ========================================== */
+
+        .notification-box {
+            margin-top: 10px;
+        }
+
+        .notification-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: #f1f8f2;
+            border-left: 4px solid #2e7d32;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .notification-item strong {
+            color: #2e7d32;
+        }
+
+        /* ==========================================
+           COMPLAINTS
+           ========================================== */
+
+        .complaints-section {
+            margin-top: 30px;
+        }
+
+        .complaints-section h2 {
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+
+        .complaint-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .complaint-card p {
+            margin: 7px 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .loading {
+            color: #666;
+        }
+
+        /* ==========================================
+           FEEDBACK STATUS
+           ========================================== */
+
+        .feedback-status {
+            margin-top: 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     HEADER
+     ========================================== -->
+
+<header>
+
+    <h1>
+        ♻️ Smart Waste Management
+    </h1>
+
+    <button
+        class="logout-btn"
+        onclick="logout()">
+
+        Logout
+
+    </button>
+
+</header>
+
+
+
+<div class="container">
+
+
+    <!-- ==========================================
+         WELCOME
+         ========================================== -->
+
+    <div class="welcome">
+
+        <h2>
+            Welcome to your Dashboard 👋
+        </h2>
+
+        <p>
+            Manage and report waste easily using our smart waste management system.
+        </p>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         DASHBOARD CARDS
+         ========================================== -->
+
+    <div class="cards">
+
+
+        <!-- ======================================
+             WASTE CLASSIFICATION
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                🤖 Waste Classification
+            </h3>
+
+            <p>
+                Take a picture of waste and let the AI identify its category.
+            </p>
+
+            <button
+                class="button"
+                onclick="window.location.href='report.html'">
+
+                Classify Waste
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ======================================
+             LOCATION
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                📍 Location
+            </h3>
+
+            <p>
+                Use your current location while reporting waste.
+            </p>
+
+            <button
+                class="button"
+                onclick="getLocation()">
+
+                Get Location
+
+            </button>
+
+            <p id="locationResult"></p>
+
+        </div>
+
+
+
+        <!-- ======================================
+             REPORT WASTE
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                📝 Report Waste
+            </h3>
+
+            <p>
+                Report waste or an unclean area to the authorities.
+            </p>
+
+            <button
+                class="button"
+                onclick="window.location.href='report.html'">
+
+                Report Waste
+
+            </button>
+
+        </div>
+
+
+
+        <!-- ======================================
+             REWARD POINTS
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                🏆 Reward Points
+            </h3>
+
+            <p>
+                Your current points:
+            </p>
+
+            <div
+                class="points"
+                id="rewardPoints">
+
+                0
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             TOTAL REPORTS
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                📝 Total Reports
+            </h3>
+
+            <p>
+                Number of waste reports submitted:
+            </p>
+
+            <div
+                class="report-count"
+                id="totalReports">
+
+                0
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             WASTE CATEGORIES
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                ♻️ Waste Categories
+            </h3>
+
+            <p>
+                Your reported waste types:
+            </p>
+
+            <div
+                class="category-list"
+                id="categoryStatistics">
+
+                <p class="no-category">
+                    Loading categories...
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             NOTIFICATIONS
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                🔔 Notifications
+            </h3>
+
+            <div
+                class="notification-box"
+                id="notificationMessage">
+
+                <p>
+                    Loading notifications...
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ======================================
+             FEEDBACK
+             ====================================== -->
+
+        <div class="card">
+
+            <h3>
+                ⭐ Feedback
+            </h3>
+
+            <p>
+                Share your experience with the waste management service.
+            </p>
+
+            <button
+                class="button"
+                onclick="openFeedback()">
+
+                Give Feedback
+
+            </button>
+
+            <div
+                class="feedback-status"
+                id="feedbackStatus">
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ==========================================
+         MY COMPLAINTS
+         ========================================== -->
+
+    <div class="complaints-section">
+
+        <h2>
+            📋 My Complaints
+        </h2>
+
+        <div
+            id="complaintsContainer">
+
+            <p class="loading">
+                Loading your complaints...
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+
+<footer>
+
+    AI Powered Smart Waste Management System
+
+</footer>
+
+
+
+<script>
+
+
+// =================================================
+// GET USER ID
+// =================================================
+
+function getUserId() {
+
+    const userID =
+        window.localStorage.getItem("userId");
+
+    return userID;
+
+}
+
+
+
+// =================================================
+// LOAD REWARD POINTS
+// =================================================
+
+async function loadRewardPoints() {
+
+    const userId =
+        getUserId();
+
+    const pointsElement =
+        document.getElementById(
+            "rewardPoints"
+        );
+
+
+    if (!userId) {
+
+        pointsElement.innerHTML =
+            "0";
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/users/" + userId
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load user information."
+            );
+
+        }
+
+
+        const user =
+            await response.json();
+
+
+        pointsElement.innerHTML =
+            user.rewardPoints ?? 0;
+
+
+    } catch (error) {
+
+        console.error(
+            "Reward points loading error:",
+            error
+        );
+
+
+        pointsElement.innerHTML =
+            "0";
+
+    }
+
+}
+
+
+
+// =================================================
+// LOAD COMPLAINTS
+// =================================================
+
+async function loadComplaints() {
+
+    const container =
+        document.getElementById(
+            "complaintsContainer"
+        );
+
+
+    const totalReports =
+        document.getElementById(
+            "totalReports"
+        );
+
+
+    const categoryStatistics =
+        document.getElementById(
+            "categoryStatistics"
+        );
+
+
+    const notificationMessage =
+        document.getElementById(
+            "notificationMessage"
+        );
+
+
+    const userId =
+        getUserId();
+
+
+    // ---------------------------------------------
+    // CHECK USER
+    // ---------------------------------------------
+
+    if (!userId) {
+
+        container.innerHTML =
+            "<p>⚠️ User information not found. Please login again.</p>";
+
+        totalReports.innerHTML =
+            "0";
+
+        categoryStatistics.innerHTML =
+            "<p class='no-category'>No data available.</p>";
+
+        notificationMessage.innerHTML =
+            "<p>⚠️ Please login again.</p>";
+
+        return;
+
+    }
+
+
+    try {
+
+
+        // =========================================
+        // GET USER COMPLAINTS
+        // =========================================
+
+        const response =
+            await fetch(
+                "/api/complaints/user/" + userId
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load complaints."
+            );
+
+        }
+
+
+        const complaints =
+            await response.json();
+
+
+
+        // =========================================
+        // TOTAL REPORTS
+        // =========================================
+
+        totalReports.innerHTML =
+            complaints.length;
+
+
+
+        // =========================================
+        // CATEGORY STATISTICS
+        // =========================================
+
+        const categoryCounts = {};
+
+
+        complaints.forEach(
+            function(complaint) {
+
+                const wasteType =
+                    complaint.wasteType ||
+                    "Unknown";
+
+
+                const category =
+                    wasteType
+                        .toString()
+                        .trim()
+                        .toLowerCase();
+
+
+                if (
+                    categoryCounts[category]
+                ) {
+
+                    categoryCounts[category]++;
+
+                } else {
+
+                    categoryCounts[category] =
+                        1;
+
+                }
+
+            }
+        );
+
+
+        categoryStatistics.innerHTML =
+            "";
+
+
+        const categories =
+            Object.keys(
+                categoryCounts
+            );
+
+
+        if (
+            categories.length === 0
+        ) {
+
+            categoryStatistics.innerHTML =
+                "<p class='no-category'>" +
+                "No waste categories reported yet." +
+                "</p>";
+
+        } else {
+
+
+            categories.forEach(
+                function(category) {
+
+                    const item =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    item.className =
+                        "category-item";
+
+
+                    const displayName =
+                        category
+                            .charAt(0)
+                            .toUpperCase() +
+                        category.slice(1);
+
+
+                    item.innerHTML =
+
+                        "<span class='category-name'>" +
+                        "♻️ " +
+                        displayName +
+                        "</span>" +
+
+                        "<span class='category-number'>" +
+                        categoryCounts[category] +
+                        "</span>";
+
+
+                    categoryStatistics.appendChild(
+                        item
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =========================================
+        // NOTIFICATIONS
+        // =========================================
+
+        notificationMessage.innerHTML =
+            "";
+
+
+        if (
+            complaints.length === 0
+        ) {
+
+            notificationMessage.innerHTML =
+
+                "<div class='notification-item'>" +
+                "🔔 No reports submitted yet." +
+                "</div>";
+
+        } else {
+
+
+            const latestComplaints =
+                complaints
+                    .slice()
+                    .sort(
+                        function(a, b) {
+
+                            return b.id - a.id;
+
+                        }
+                    )
+                    .slice(0, 3);
+
+
+            latestComplaints.forEach(
+                function(complaint) {
+
+                    const notification =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    notification.className =
+                        "notification-item";
+
+
+                    const status =
+                        complaint.status ||
+                        "PENDING";
+
+
+                    let icon =
+                        "⏳";
+
+
+                    if (
+                        status.toUpperCase() ===
+                        "COMPLETED"
+                    ) {
+
+                        icon = "✅";
+
+                    }
+
+
+                    if (
+                        status.toUpperCase() ===
+                        "REJECTED"
+                    ) {
+
+                        icon = "❌";
+
+                    }
+
+
+                    notification.innerHTML =
+
+                        icon +
+                        " <strong>Complaint #" +
+                        complaint.id +
+                        "</strong><br>" +
+
+                        "Status: " +
+                        status;
+
+
+                    notificationMessage.appendChild(
+                        notification
+                    );
+
+                }
+            );
+
+        }
+
+
+
+        // =========================================
+        // DISPLAY COMPLAINTS
+        // =========================================
+
+        if (
+            complaints.length === 0
+        ) {
+
+            container.innerHTML =
+                "<p>No complaints submitted yet.</p>";
+
+            return;
+
+        }
+
+
+        container.innerHTML =
+            "";
+
+
+        complaints.forEach(
+            function(complaint) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "complaint-card";
+
+
+                card.innerHTML =
+
+    "<p><strong>🆔 Complaint ID:</strong> " +
+    complaint.id +
+    "</p>" +
+
+    "<p><strong>🗑️ Waste Type:</strong> " +
+    (complaint.wasteType ||
+        "Unknown") +
+    "</p>" +
+
+    "<p><strong>🤖 AI Confidence:</strong> " +
+    (complaint.confidence ??
+        0) +
+    "%</p>" +
+
+    "<p><strong>📝 Description:</strong> " +
+    complaint.description +
+    "</p>" +
+
+    "<p><strong>📍 Location:</strong> " +
+    complaint.location +
+    "</p>" +
+
+    "<p><strong>📊 Status:</strong> " +
+    "<span class='status'>" +
+    complaint.status +
+    "</span></p>" +
+
+    "<p><strong>🕐 Created:</strong> " +
+    complaint.createdAt +
+    "</p>" +
+
+    "<button class='button' " +
+    "onclick='showStatusHistory(" +
+    complaint.id +
+    ")'>" +
+    "📋 View Status History" +
+    "</button>" +
+
+    "<div id='history-" +
+    complaint.id +
+    "' style='margin-top:15px;'></div>";
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Dashboard data loading error:",
+            error
+        );
+
+
+        totalReports.innerHTML =
+            "0";
+
+
+        categoryStatistics.innerHTML =
+            "<p class='no-category'>" +
+            "Unable to load category data." +
+            "</p>";
+
+
+        notificationMessage.innerHTML =
+            "<div class='notification-item'>" +
+            "❌ Unable to load notifications." +
+            "</div>";
+
+
+        container.innerHTML =
+            "<p>❌ Unable to load complaints.</p>";
+
+    }
+
+}
+
+
+
+// =================================================
+// GPS LOCATION
+// =================================================
+
+function getLocation() {
+
+    const result =
+        document.getElementById(
+            "locationResult"
+        );
+
+
+    if (
+        !navigator.geolocation
+    ) {
+
+        result.innerHTML =
+            "GPS is not supported by this browser.";
+
+        return;
+
+    }
+
+
+    result.innerHTML =
+        "Getting your location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+
+            result.innerHTML =
+                "Latitude: " +
+                latitude.toFixed(6) +
+                "<br>Longitude: " +
+                longitude.toFixed(6);
+
+        },
+
+
+        function(error) {
+
+            console.error(
+                "GPS error:",
+                error
+            );
+
+
+            result.innerHTML =
+                "Unable to get location. Please allow location access.";
+
+        }
+
+    );
+
+}
+
+
+
+// =================================================
+// FEEDBACK
+// =================================================
+
+async function openFeedback() {
+
+    const userId =
+        getUserId();
+
+
+    const feedbackStatus =
+        document.getElementById(
+            "feedbackStatus"
+        );
+
+
+    // ---------------------------------------------
+    // CHECK LOGIN
+    // ---------------------------------------------
+
+    if (!userId) {
+
+        alert(
+            "⚠️ User information not found. Please login again."
+        );
+
+        return;
+
+    }
+
+
+    // ---------------------------------------------
+    // ASK RATING
+    // ---------------------------------------------
+
+    const ratingInput =
+        prompt(
+            "⭐ Rate the waste management service from 1 to 5:"
+        );
+
+
+    if (
+        ratingInput === null
+    ) {
+
+        return;
+
+    }
+
+
+    const rating =
+        Number(
+            ratingInput
+        );
+
+
+    // ---------------------------------------------
+    // VALIDATE RATING
+    // ---------------------------------------------
+
+    if (
+        !Number.isInteger(rating) ||
+        rating < 1 ||
+        rating > 5
+    ) {
+
+        alert(
+            "⚠️ Please enter a rating between 1 and 5."
+        );
+
+        return;
+
+    }
+
+
+    // ---------------------------------------------
+    // ASK COMMENT
+    // ---------------------------------------------
+
+    const comment =
+        prompt(
+            "📝 Please enter your feedback:"
+        );
+
+
+    if (
+        comment === null ||
+        comment.trim() === ""
+    ) {
+
+        alert(
+            "⚠️ Please enter your feedback."
+        );
+
+        return;
+
+    }
+
+
+    // ---------------------------------------------
+    // CREATE FEEDBACK OBJECT
+    // ---------------------------------------------
+
+    const feedback = {
+
+        userId:
+            Number(userId),
+
+        rating:
+            rating,
+
+        comment:
+            comment.trim()
+
+    };
+
+
+    // ---------------------------------------------
+    // SHOW PROCESSING
+    // ---------------------------------------------
+
+    feedbackStatus.innerHTML =
+        "Submitting feedback...";
+
+
+    try {
+
+
+        // =========================================
+        // SEND TO SPRING BOOT
+        // =========================================
+
+        const response =
+            await fetch(
+                "/api/feedback",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            feedback
+                        )
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Feedback response:",
+            result
+        );
+
+
+        // =========================================
+        // ERROR
+        // =========================================
+
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                result.error ||
+                "Failed to submit feedback."
+            );
+
+        }
+
+
+        // =========================================
+        // SUCCESS
+        // =========================================
+
+        feedbackStatus.innerHTML =
+            "✅ Feedback submitted successfully!";
+
+
+        alert(
+            "✅ Thank you! Your feedback has been submitted successfully."
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Feedback error:",
+            error
+        );
+
+
+        feedbackStatus.innerHTML =
+            "❌ Unable to submit feedback.";
+
+
+        alert(
+            "❌ Unable to submit feedback.\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+// =================================================
+// SHOW COMPLAINT STATUS HISTORY
+// =================================================
+
+async function showStatusHistory(complaintId) {
+
+    const historyBox =
+        document.getElementById(
+            "history-" + complaintId
+        );
+
+    historyBox.innerHTML =
+        "⏳ Loading status history...";
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/complaints/" +
+                complaintId +
+                "/status-history"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load status history."
+            );
+        }
+
+        const history =
+            await response.json();
+
+        if (history.length === 0) {
+
+            historyBox.innerHTML =
+                "No status history available.";
+
+            return;
+        }
+
+        let html =
+            "<strong>📋 Status Timeline</strong><br><br>";
+
+        history.forEach(function(item) {
+
+            html +=
+                "🔹 <strong>" +
+                item.status +
+                "</strong>" +
+                "<br>" +
+                "🕐 " +
+                item.changedAt +
+                "<br><br>";
+
+        });
+
+        historyBox.innerHTML = html;
+
+    } catch (error) {
+
+        console.error(
+            "Status history error:",
+            error
+        );
+
+        historyBox.innerHTML =
+            "❌ Unable to load status history.";
+    }
+}
+
+// =================================================
+// LOGOUT
+// =================================================
+
+function logout() {
+
+    localStorage.removeItem(
+        "userId"
+    );
+
+
+    localStorage.removeItem(
+        "userName"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+
+// =================================================
+// LOAD DASHBOARD
+// =================================================
+
+loadComplaints();
+
+loadRewardPoints();
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+# Python virtual environment
+ai-model/venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files
+.vscode/
+.idea/
+
+# Java / Maven build files
+backend/target/
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+application-local.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+backend/src/main/resources/application.properties 
+
+dataset/

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Waste Management - Login</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f4f7f5;
+        }
+
+        .login-box {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            margin-bottom: 18px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: #999;
+        }
+
+        #message {
+            text-align: center;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register a {
+            color: #2e7d32;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-box">
+
+    <h1>♻️ Smart Waste</h1>
+
+    <h2>User Login</h2>
+
+    <form id="loginForm">
+
+        <label for="email">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+        >
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Enter your password"
+            required
+        >
+
+        <button
+            type="submit"
+            id="loginButton"
+        >
+            Login
+        </button>
+
+    </form>
+
+    <p id="message"></p>
+
+    <div class="register">
+        Don't have an account?
+        <a href="register.html">Register</a>
+    </div>
+
+</div>
+
+
+<script>
+
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const message =
+            document.getElementById("message");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        loginButton.disabled = true;
+        loginButton.innerText = "Logging in...";
+        message.innerText = "";
+
+        const loginData = {
+            email: email,
+            password: password
+        };
+
+        try {
+
+            const response =
+                await fetch("/api/auth/login", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(loginData)
+                });
+
+
+            const responseText =
+                await response.text();
+
+
+            console.log(
+                "Login response:",
+                responseText
+            );
+
+
+            if (response.ok) {
+
+                const result =
+                    JSON.parse(responseText);
+
+
+                // SAVE ACTUAL USER INFORMATION
+
+                localStorage.setItem(
+                    "userId",
+                    result.id
+                );
+
+                localStorage.setItem(
+                    "userName",
+                    result.name
+                );
+
+                localStorage.setItem(
+                    "userEmail",
+                    result.email
+                );
+
+                localStorage.setItem(
+                    "userRole",
+                    result.role
+                );
+
+                localStorage.setItem(
+                    "rewardPoints",
+                    result.rewardPoints
+                );
+
+
+                console.log(
+                    "Logged-in User ID:",
+                    result.id
+                );
+
+
+                message.style.color =
+                    "#2e7d32";
+
+                message.innerText =
+                    "✅ Login successful! Opening dashboard...";
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                }, 1000);
+
+
+            } else {
+
+                message.style.color =
+                    "red";
+
+                message.innerText =
+                    "❌ " + responseText;
+
+                loginButton.disabled =
+                    false;
+
+                loginButton.innerText =
+                    "Login";
+            }
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            message.style.color =
+                "red";
+
+            message.innerText =
+                "❌ Unable to connect to backend.";
+
+            loginButton.disabled =
+                false;
+
+            loginButton.innerText =
+                "Login";
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>

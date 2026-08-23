@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Waste Management - Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 22px;
+        }
+
+        .logout-btn {
+            background-color: white;
+            color: #2e7d32;
+            border: none;
+            padding: 9px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #2e7d32;
+        }
+
+        .card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .points {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        .complaints-section {
+            margin-top: 30px;
+        }
+
+        .complaints-section h2 {
+            margin-bottom: 15px;
+            color: #2e7d32;
+        }
+
+        .complaint-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .complaint-card p {
+            margin: 7px 0;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+
+        .loading {
+            color: #666;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>♻️ Smart Waste Management</h1>
+
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</header>
+
+
+<div class="container">
+
+    <div class="welcome">
+
+        <h2>Welcome to your Dashboard 👋</h2>
+
+        <p>
+            Manage and report waste easily using our smart waste management system.
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h3>🤖 Waste Classification</h3>
+
+            <p>
+                Take a picture of waste and let the AI identify its category.
+            </p>
+
+            <button
+                class="button"
+                onclick="window.location.href='report.html'">
+
+                Classify Waste
+
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📍 Location</h3>
+
+            <p>
+                Use your current location while reporting waste.
+            </p>
+
+            <button
+                class="button"
+                onclick="getLocation()">
+
+                Get Location
+
+            </button>
+
+            <p id="locationResult"></p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📝 Report Waste</h3>
+
+            <p>
+                Report waste or an unclean area to the authorities.
+            </p>
+
+            <button
+                class="button"
+                onclick="window.location.href='report.html'">
+
+                Report Waste
+
+            </button>
+
+        </div>
+
+
+        <!-- ==========================================
+             REWARD POINTS
+             ========================================== -->
+
+        <div class="card">
+
+            <h3>🏆 Reward Points</h3>
+
+            <p>
+                Your current points:
+            </p>
+
+            <div class="points" id="rewardPoints">
+                0
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>🔔 Notifications</h3>
+
+            <p id="notificationMessage">
+                No new notifications.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⭐ Feedback</h3>
+
+            <p>
+                Share your experience with the waste management service.
+            </p>
+
+            <button
+                class="button"
+                onclick="alert('Citizen feedback will be connected here.')">
+
+                Give Feedback
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         COMPLAINTS
+         ========================================== -->
+
+    <div class="complaints-section">
+
+        <h2>📋 My Complaints</h2>
+
+        <div id="complaintsContainer">
+
+            <p class="loading">
+                Loading your complaints...
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    AI Powered Smart Waste Management System
+
+</footer>
+
+
+<script>
+
+
+// ==========================================
+// USER ID
+// ==========================================
+
+function getUserId() {
+
+    const userID =
+        window.localStorage.getItem("userId");
+
+    return userID;
+}
+
+
+
+// ==========================================
+// LOAD REWARD POINTS
+// ==========================================
+
+async function loadRewardPoints() {
+
+    const userId =
+        getUserId();
+
+    const pointsElement =
+        document.getElementById("rewardPoints");
+
+
+    // Check if user is logged in
+
+    if (!userId) {
+
+        pointsElement.innerHTML =
+            "0";
+
+        return;
+    }
+
+
+    try {
+
+        // Get user information from Spring Boot
+
+        const response =
+            await fetch(
+                "/api/users/" + userId
+            );
+
+
+        // Check response
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load user information."
+            );
+
+        }
+
+
+        // Convert response to JSON
+
+        const user =
+            await response.json();
+
+
+        // Display reward points
+
+        pointsElement.innerHTML =
+            user.rewardPoints ?? 0;
+
+
+        console.log(
+            "Current reward points:",
+            user.rewardPoints
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Reward points loading error:",
+            error
+        );
+
+
+        pointsElement.innerHTML =
+            "0";
+
+    }
+
+}
+
+
+
+// ==========================================
+// LOAD COMPLAINTS
+// ==========================================
+
+async function loadComplaints() {
+
+    const container =
+        document.getElementById("complaintsContainer");
+
+    const userId =
+        getUserId();
+
+
+    if (!userId) {
+
+        container.innerHTML =
+            "<p>⚠️ User information not found. Please login again.</p>";
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/complaints/user/" + userId
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load complaints."
+            );
+
+        }
+
+
+        const complaints =
+            await response.json();
+
+
+        if (!complaints.length) {
+
+            container.innerHTML =
+                "<p>No complaints submitted yet.</p>";
+
+            return;
+        }
+
+
+        container.innerHTML = "";
+
+
+        complaints.forEach(
+            function(complaint) {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "complaint-card";
+
+
+                card.innerHTML =
+
+                    "<p><strong>🆔 Complaint ID:</strong> " +
+                    complaint.id +
+                    "</p>" +
+
+                    "<p><strong>🗑️ Waste Type:</strong> " +
+                    (complaint.wasteType || "Unknown") +
+                    "</p>" +
+
+                    "<p><strong>🤖 AI Confidence:</strong> " +
+                    (complaint.confidence ?? 0) +
+                    "%</p>" +
+
+                    "<p><strong>📝 Description:</strong> " +
+                    complaint.description +
+                    "</p>" +
+
+                    "<p><strong>📍 Location:</strong> " +
+                    complaint.location +
+                    "</p>" +
+
+                    "<p><strong>📊 Status:</strong> " +
+                    "<span class='status'>" +
+                    complaint.status +
+                    "</span></p>" +
+
+                    "<p><strong>🕐 Created:</strong> " +
+                    complaint.createdAt +
+                    "</p>";
+
+
+                container.appendChild(card);
+
+            }
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Complaint loading error:",
+            error
+        );
+
+
+        container.innerHTML =
+            "<p>❌ Unable to load complaints.</p>";
+
+    }
+
+}
+
+
+
+// ==========================================
+// GPS LOCATION
+// ==========================================
+
+function getLocation() {
+
+    const result =
+        document.getElementById("locationResult");
+
+
+    if (!navigator.geolocation) {
+
+        result.innerHTML =
+            "GPS is not supported by this browser.";
+
+        return;
+    }
+
+
+    result.innerHTML =
+        "Getting your location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const latitude =
+                position.coords.latitude;
+
+            const longitude =
+                position.coords.longitude;
+
+
+            result.innerHTML =
+                "Latitude: " +
+                latitude.toFixed(6) +
+                "<br>Longitude: " +
+                longitude.toFixed(6);
+
+        },
+
+
+        function(error) {
+
+            result.innerHTML =
+                "Unable to get location. Please allow location access.";
+
+        }
+
+    );
+
+}
+
+
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
+function logout() {
+
+    localStorage.removeItem("userId");
+
+    localStorage.removeItem("userName");
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+
+// ==========================================
+// LOAD DASHBOARD DATA
+// ==========================================
+
+// Load complaints
+
+loadComplaints();
+
+
+// Load current reward points
+
+loadRewardPoints();
+
+
+</script>
+
+
+</body>
+
+</html>
