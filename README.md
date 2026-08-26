@@ -250,7 +250,6 @@ The core waste complaint reporting, AI classification, complaint management, cle
 Author
 
 Nandini Anil Shende
-
 B.Tech Information Technology
 Kavikulguru Institute of Technology and Science, Ramtek
 Nagpur, Maharashtra, India 
