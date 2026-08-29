@@ -254,3 +254,26 @@ Nandini Anil Shende
 B.Tech Information Technology
 Kavikulguru Institute of Technology and Science, Ramtek
 Nagpur, Maharashtra, India 
+
+## Screenshots
+
+### 1. User Login
+![User Login](screenshots/User%20login.jpg)
+
+### 2. Report Waste Form
+![Report Waste Form](screenshots/Report%20waste%20form.jpg)
+
+### 3. Report Waste Processing
+![Report Waste Processing](screenshots/Report%20waste%20processing.jpg)
+
+### 4. Report Successfully Submitted
+![Report Successfully Submitted](screenshots/Report%20successfully%20submitted.jpg)
+
+### 5. User Dashboard
+![User Dashboard](screenshots/User%20Dashboard.jpg)
+
+### 6. Admin Dashboard – AI Insights
+![Admin Dashboard](screenshots/Admin%20Dashboard.jpg)
+
+### 7. Admin Dashboard – Analytics
+![Admin Dashboard Analytics](screenshots/Admin%20Dashboard%20Analytics.jpg)
