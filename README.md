@@ -78,7 +78,6 @@ User Reports Waste Complaint
             ↓
      Team Status: AVAILABLE
 
-
 ##Project Structure
 
 AI-Powered-Smart-Waste-Management-System/
