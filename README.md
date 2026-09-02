@@ -1,61 +1,40 @@
-AI-Powered Smart Waste Management System
+♻️ AI-Powered Smart Waste Management System
 
 An AI-powered web-based waste management system designed to simplify waste complaint reporting, automatically classify waste using machine learning, and support efficient complaint and cleanup-team management.
 
-Project Overview
+📌 Project Overview
 
 The AI-Powered Smart Waste Management System allows users to report waste-related complaints by providing a description, image, and location information.
 
-The uploaded waste image is analyzed by an AI model that predicts the waste category along with its prediction confidence. The complaint is then stored in the MySQL database for administrative management.
+The uploaded waste image is analyzed by an AI model that predicts the waste category along with its prediction confidence. The complaint is then stored in a MySQL database for administrative management.
 
 Administrators can manage complaints, search and filter complaints, assign available cleanup teams, monitor team availability, and track complaint completion.
 
-Key Features
+✨ Key Features
 
-- AI-based waste classification from uploaded images
-- AI prediction confidence display
-- Waste complaint reporting with image upload
-- Complaint search by complaint ID
-- Complaint filtering by status
-- Complaint image storage and preview
-- Cleanup-team assignment
-- Cleanup-team BUSY/AVAILABLE workflow
-- User reward points for successful complaint reporting
-- MySQL database integration
-- Admin complaint management
-- Waste-category statistics and analytics
+- 🤖 AI-based waste classification from uploaded images
+- 📊 AI prediction confidence display
+- 📝 Waste complaint reporting with image upload
+- 🔍 Complaint search by complaint ID
+- 🔎 Complaint filtering by status
+- 🖼️ Complaint image storage and preview
+- 👷 Cleanup-team assignment
+- 🔄 Cleanup-team BUSY/AVAILABLE workflow
+- ⭐ User reward points for successful complaint reporting
+- 🗄️ MySQL database integration
+- 👨‍💼 Admin complaint management
+- 📈 Waste-category statistics and analytics
 
-Technologies Used
+🛠️ Technologies Used
 
-Backend
+Category| Technologies
+Backend| Java, Spring Boot, Maven
+AI & Machine Learning| Python, TensorFlow, Keras, Flask
+Frontend| HTML, CSS, JavaScript
+Database| MySQL
+Version Control| Git, GitHub
 
-- Java
-- Spring Boot
-- Maven
-
-AI & Machine Learning
-
-- Python
-- TensorFlow / Keras
-- Machine Learning
-- Flask
-
-Frontend
-
-- HTML
-- CSS
-- JavaScript
-
-Database
-
-- MySQL
-
-Tools & Version Control
-
-- Git
-- GitHub
-
-System Workflow
+🔄 System Workflow
 
 User Reports Waste Complaint
             ↓
@@ -77,7 +56,7 @@ User Reports Waste Complaint
             ↓
      Team Status: AVAILABLE
 
-Project Structure
+📁 Project Structure
 
 AI-Powered-Smart-Waste-Management-System/
 │
@@ -96,22 +75,23 @@ AI-Powered-Smart-Waste-Management-System/
 ├── .gitignore
 └── README.md
 
-AI Waste Classification
+🤖 AI Waste Classification
 
 The project uses a machine-learning model to classify uploaded waste images into different waste categories.
 
 The AI service is implemented using Python, Flask, and TensorFlow/Keras.
 
-When a user uploads a waste image:
+AI Prediction Process
 
-1. The image is sent from the Spring Boot backend to the AI service.
-2. The AI model analyzes the image.
-3. The model predicts the most likely waste category.
-4. The prediction confidence is calculated.
-5. The predicted category and confidence are returned to the backend.
-6. The result is used while processing and storing the complaint.
+1. The user uploads a waste image.
+2. The Spring Boot backend sends the image to the AI service.
+3. The AI model analyzes the image.
+4. The model predicts the most likely waste category.
+5. The prediction confidence is calculated.
+6. The category and confidence are returned to the backend.
+7. The result is used while processing and storing the complaint.
 
-Supported Waste Categories
+♻️ Supported Waste Categories
 
 The AI model supports 9 waste categories:
 
@@ -125,7 +105,7 @@ The AI model supports 9 waste categories:
 - Textile
 - Others
 
-Admin Management
+👨‍💼 Admin Management
 
 The administrator can:
 
@@ -138,7 +118,7 @@ The administrator can:
 - Track complaint completion
 - View waste-category statistics and analytics
 
-User Features
+👤 User Features
 
 Users can:
 
@@ -150,7 +130,7 @@ Users can:
 - View AI prediction confidence
 - Earn reward points for successful complaint reporting
 
-Cleanup-Team Workflow
+👷 Cleanup-Team Workflow
 
 The system manages cleanup teams using an availability-based workflow.
 
@@ -164,9 +144,9 @@ Complaint Completed
     ↓
 AVAILABLE
 
-This helps administrators assign complaints only to available cleanup teams and monitor their current workload.
+This workflow helps administrators assign complaints to available cleanup teams and monitor their current workload.
 
-How to Run the Project
+🚀 How to Run the Project
 
 Prerequisites
 
@@ -191,13 +171,13 @@ Update the database credentials according to your local MySQL setup.
 
 3. Start the AI Service
 
-Open a terminal and navigate to the AI model directory:
+Navigate to the AI model directory:
 
 cd ai-model
 
 Activate the Python virtual environment and install the required dependencies.
 
-Then start the Flask AI service:
+Start the Flask AI service:
 
 python app.py
 
@@ -225,7 +205,7 @@ Open the frontend in your browser and use the application according to your user
 
 «Note: Database credentials and other environment-specific configuration should be updated according to the local development environment.»
 
-My Role
+👩‍💻 My Role
 
 Project Group Leader
 
@@ -235,7 +215,7 @@ Project Group Leader
 - Contributed to cleanup-team workflow implementation.
 - Participated in project testing, debugging, and system integration.
 
-Future Scope
+🔮 Future Scope
 
 - Improve AI classification accuracy using a larger and more diverse dataset.
 - Add advanced AI-based waste insights and recommendations.
@@ -243,17 +223,20 @@ Future Scope
 - Further improve location-based waste management and monitoring.
 - Enhance the system with additional smart waste-management features.
 
-Project Status
+📊 Project Status
 
 The core waste complaint reporting, AI classification, complaint management, cleanup-team workflow, and waste-category analytics features have been implemented and tested.
 
-Author
+👩‍🎓 Author
 
 Nandini Anil Shende
 
 B.Tech Information Technology
 Kavikulguru Institute of Technology and Science, Ramtek
 Nagpur, Maharashtra, India
+
+🔗 GitHub: "Nandini-Shende-241" (https://github.com/Nandini-Shende-241)
+
 
 ## Screenshots
 
