@@ -1,8 +1,8 @@
-AI-Powered Smart Waste Management System
+##AI-Powered Smart Waste Management System
 
 An AI-powered web-based waste management system designed to simplify waste complaint reporting, automatically classify waste using machine learning, and support efficient complaint and cleanup-team management.
 
-Project Overview
+##Project Overview
 
 The AI-Powered Smart Waste Management System allows users to report waste-related complaints by providing a description, image, and location information.
 
@@ -10,7 +10,7 @@ The uploaded waste image is analyzed by an AI model that predicts the waste cate
 
 Administrators can manage complaints, search and filter complaints, assign available cleanup teams, monitor team availability, and track complaint completion.
 
-Key Features
+##Key Features
 
 - AI-based waste classification from uploaded images
 - AI prediction confidence display
@@ -25,37 +25,37 @@ Key Features
 - Admin complaint management
 - Waste-category statistics and analytics
 
-Technologies Used
+##Technologies Used
 
-Backend
+###Backend
 
 - Java
 - Spring Boot
 - Maven
 
-AI & Machine Learning
+###AI & Machine Learning
 
 - Python
 - TensorFlow / Keras
 - Machine Learning
 - Flask
 
-Frontend
+###Frontend
 
 - HTML
 - CSS
 - JavaScript
 
-Database
+###Database
 
 - MySQL
 
-Tools & Version Control
+###Tools & Version Control
 
 - Git
 - GitHub
 
-System Workflow
+##System Workflow
 
 User Reports Waste Complaint
             ↓
@@ -77,7 +77,7 @@ User Reports Waste Complaint
             ↓
      Team Status: AVAILABLE
 
-Project Structure
+##Project Structure
 
 AI-Powered-Smart-Waste-Management-System/
 │
@@ -225,7 +225,7 @@ Open the frontend in your browser and use the application according to your user
 
 «Note: Database credentials and other environment-specific configuration should be updated according to the local development environment.»
 
-My Role
+##My Role
 
 Project Group Leader
 
@@ -235,7 +235,7 @@ Project Group Leader
 - Contributed to cleanup-team workflow implementation.
 - Participated in project testing, debugging, and system integration.
 
-Future Scope
+##Future Scope
 
 - Improve AI classification accuracy using a larger and more diverse dataset.
 - Add advanced AI-based waste insights and recommendations.
@@ -243,11 +243,11 @@ Future Scope
 - Further improve location-based waste management and monitoring.
 - Enhance the system with additional smart waste-management features.
 
-Project Status
+##Project Status
 
 The core waste complaint reporting, AI classification, complaint management, cleanup-team workflow, and waste-category analytics features have been implemented and tested.
 
-Author
+##Author
 
 Nandini Anil Shende
 
