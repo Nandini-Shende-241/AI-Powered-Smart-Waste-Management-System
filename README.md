@@ -1,4 +1,4 @@
-AI-Powered Smart Waste Management System
+#AI-Powered Smart Waste Management System
 
 An AI-powered web-based waste management system designed to simplify waste complaint reporting, automatically classify waste using machine learning, and support efficient complaint and cleanup-team management.
 
